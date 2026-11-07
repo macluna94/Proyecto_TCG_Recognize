@@ -1,0 +1,15 @@
+# Extracción de metadata (S1-T3)
+requests>=2.31.0
+
+# Preprocesamiento y Visión por Computadora (S1-T5)
+opencv-python>=4.8.0
+numpy>=1.24.0
+Pillow>=10.0.0
+
+# Extracción de texto y fuzzy matching (S1-T6, S1-T7)
+pytesseract>=0.3.10
+rapidfuzz>=3.6.0
+
+# Opcional: Entorno de experimentación y notebooks
+jupyter>=1.0.0
+matplotlib>=3.7.0
