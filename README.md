@@ -1,8 +1,11 @@
 
+# Proyecto_TCG_Recognize
 
+
+ **Materia**: Reonocimiento de Patrones
 ## Estructura del Proyecto
 
-
+```
 tcg-recognize/
 ├── .gitignore
 ├── README.md
@@ -30,3 +33,4 @@ tcg-recognize/
     │   ├── ocr.py              # Extracción de texto con Tesseract
     │   └── matcher.py          # Fuzzy matching con RapidFuzz
     └── main.py                 # Punto de entrada o prototipo de integración
+```
