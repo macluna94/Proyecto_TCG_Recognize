@@ -1,0 +1,352 @@
+[
+  {
+    "id": "me55-1",
+    "name": "Exeggcute",
+    "number": "1",
+    "rarity": "Common",
+    "image_url": "https://images.scrydex.com/pokemon/me55-1/small"
+  },
+  {
+    "id": "me55-3",
+    "name": "Volbeat",
+    "number": "3",
+    "rarity": "Common",
+    "image_url": "https://images.scrydex.com/pokemon/me55-3/small"
+  },
+  {
+    "id": "me55-2",
+    "name": "Alolan Exeggutor",
+    "number": "2",
+    "rarity": "Common",
+    "image_url": "https://images.scrydex.com/pokemon/me55-2/small"
+  },
+  {
+    "id": "me55-4",
+    "name": "Illumise",
+    "number": "4",
+    "rarity": "Common",
+    "image_url": "https://images.scrydex.com/pokemon/me55-4/small"
+  },
+  {
+    "id": "me55-5",
+    "name": "Tropius",
+    "number": "5",
+    "rarity": "Common",
+    "image_url": "https://images.scrydex.com/pokemon/me55-5/small"
+  },
+  {
+    "id": "me55-7",
+    "name": "Cherrim",
+    "number": "7",
+    "rarity": "Common",
+    "image_url": "https://images.scrydex.com/pokemon/me55-7/small"
+  },
+  {
+    "id": "me55-6",
+    "name": "Cherubi",
+    "number": "6",
+    "rarity": "Common",
+    "image_url": "https://images.scrydex.com/pokemon/me55-6/small"
+  },
+  {
+    "id": "me55-8",
+    "name": "Vivillon",
+    "number": "8",
+    "rarity": "Common",
+    "image_url": "https://images.scrydex.com/pokemon/me55-8/small"
+  },
+  {
+    "id": "me55-9",
+    "name": "Vulpix",
+    "number": "9",
+    "rarity": "Common",
+    "image_url": "https://images.scrydex.com/pokemon/me55-9/small"
+  },
+  {
+    "id": "me55-10",
+    "name": "Ninetales",
+    "number": "10",
+    "rarity": "Common",
+    "image_url": "https://images.scrydex.com/pokemon/me55-10/small"
+  },
+  {
+    "id": "me55-12",
+    "name": "Ho-Oh",
+    "number": "12",
+    "rarity": "Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-12/small"
+  },
+  {
+    "id": "me55-11",
+    "name": "Moltres",
+    "number": "11",
+    "rarity": "Common",
+    "image_url": "https://images.scrydex.com/pokemon/me55-11/small"
+  },
+  {
+    "id": "me55-13",
+    "name": "Victini",
+    "number": "13",
+    "rarity": "Common",
+    "image_url": "https://images.scrydex.com/pokemon/me55-13/small"
+  },
+  {
+    "id": "me55-18",
+    "name": "Articuno",
+    "number": "18",
+    "rarity": "Common",
+    "image_url": "https://images.scrydex.com/pokemon/me55-18/small"
+  },
+  {
+    "id": "me55-16",
+    "name": "Slowpoke",
+    "number": "16",
+    "rarity": "Common",
+    "image_url": "https://images.scrydex.com/pokemon/me55-16/small"
+  },
+  {
+    "id": "me55-14",
+    "name": "Reshiram",
+    "number": "14",
+    "rarity": "Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-14/small"
+  },
+  {
+    "id": "me55-15",
+    "name": "Fuecoco ex",
+    "number": "15",
+    "rarity": "Double Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-15/small"
+  },
+  {
+    "id": "me55-17",
+    "name": "Lapras",
+    "number": "17",
+    "rarity": "Common",
+    "image_url": "https://images.scrydex.com/pokemon/me55-17/small"
+  },
+  {
+    "id": "me55-20",
+    "name": "Palkia",
+    "number": "20",
+    "rarity": "Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-20/small"
+  },
+  {
+    "id": "me55-19",
+    "name": "Kyogre",
+    "number": "19",
+    "rarity": "Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-19/small"
+  },
+  {
+    "id": "me55-21",
+    "name": "Greninja ex",
+    "number": "21",
+    "rarity": "Double Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-21/small"
+  },
+  {
+    "id": "me55-23",
+    "name": "Pikachu",
+    "number": "23",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-23/small"
+  },
+  {
+    "id": "me55-22",
+    "name": "Wishiwashi",
+    "number": "22",
+    "rarity": "Common",
+    "image_url": "https://images.scrydex.com/pokemon/me55-22/small"
+  },
+  {
+    "id": "me55-26",
+    "name": "Pikachu",
+    "number": "26",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-26/small"
+  },
+  {
+    "id": "me55-24",
+    "name": "Pikachu",
+    "number": "24",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-24/small"
+  },
+  {
+    "id": "me55-25",
+    "name": "Pikachu",
+    "number": "25",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-25/small"
+  },
+  {
+    "id": "me55-27",
+    "name": "Pikachu",
+    "number": "27",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-27/small"
+  },
+  {
+    "id": "me55-28",
+    "name": "Pikachu",
+    "number": "28",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-28/small"
+  },
+  {
+    "id": "me55-29",
+    "name": "Pikachu",
+    "number": "29",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-29/small"
+  },
+  {
+    "id": "me55-30",
+    "name": "Pikachu",
+    "number": "30",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-30/small"
+  },
+  {
+    "id": "me55-31",
+    "name": "Pikachu",
+    "number": "31",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-31/small"
+  },
+  {
+    "id": "me55-32",
+    "name": "Pikachu",
+    "number": "32",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-32/small"
+  },
+  {
+    "id": "me55-33",
+    "name": "Pikachu",
+    "number": "33",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-33/small"
+  },
+  {
+    "id": "me55-35",
+    "name": "Pikachu",
+    "number": "35",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-35/small"
+  },
+  {
+    "id": "me55-34",
+    "name": "Pikachu",
+    "number": "34",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-34/small"
+  },
+  {
+    "id": "me55-36",
+    "name": "Pikachu",
+    "number": "36",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-36/small"
+  },
+  {
+    "id": "me55-38",
+    "name": "Pikachu",
+    "number": "38",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-38/small"
+  },
+  {
+    "id": "me55-37",
+    "name": "Pikachu",
+    "number": "37",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-37/small"
+  },
+  {
+    "id": "me55-39",
+    "name": "Pikachu",
+    "number": "39",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-39/small"
+  },
+  {
+    "id": "me55-41",
+    "name": "Pikachu",
+    "number": "41",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-41/small"
+  },
+  {
+    "id": "me55-40",
+    "name": "Pikachu",
+    "number": "40",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-40/small"
+  },
+  {
+    "id": "me55-48",
+    "name": "Pikachu",
+    "number": "48",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-48/small"
+  },
+  {
+    "id": "me55-45",
+    "name": "Pikachu",
+    "number": "45",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-45/small"
+  },
+  {
+    "id": "me55-42",
+    "name": "Pikachu",
+    "number": "42",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-42/small"
+  },
+  {
+    "id": "me55-47",
+    "name": "Pikachu",
+    "number": "47",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-47/small"
+  },
+  {
+    "id": "me55-43",
+    "name": "Pikachu",
+    "number": "43",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-43/small"
+  },
+  {
+    "id": "me55-44",
+    "name": "Pikachu",
+    "number": "44",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-44/small"
+  },
+  {
+    "id": "me55-46",
+    "name": "Pikachu",
+    "number": "46",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-46/small"
+  },
+  {
+    "id": "me55-49",
+    "name": "Pikachu",
+    "number": "49",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-49/small"
+  },
+  {
+    "id": "me55-50",
+    "name": "Pikachu",
+    "number": "50",
+    "rarity": "Pikachu Rare",
+    "image_url": "https://images.scrydex.com/pokemon/me55-50/small"
+  }
+]
