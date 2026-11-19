@@ -1,9 +1,21 @@
 import os
+import platform
 import cv2
 import numpy as np
 import pytesseract
 
-pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"  # Ajusta según tu instalación
+# Usa TESSERACT_CMD si se configura; de lo contrario, pytesseract lo busca en PATH.
+# if os.getenv("TESSERACT_CMD"):
+#     pytesseract.pytesseract.tesseract_cmd = os.environ["TESSERACT_CMD"]
+
+
+# Detectar el sistema operativo para asignar la ruta de Tesseract
+if platform.system() == "Windows":
+    # Ruta estática solo para tu entorno local en Windows
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+# En Linux (Docker), se omite esta asignación porque apt-get ya coloca Tesseract en el PATH del sistema.
+
+
 
 
 def preprocess_for_ocr(roi_image):
