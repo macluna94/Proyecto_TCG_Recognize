@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>TCG Recognize — Pastel Kanto OS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0..1,0" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            surface: "#F9FAFB",
+            pokedex: {
+              red: "#EF4444",
+              coral: "#F05D5E",
+              blush: "#FEE2E2",
+              blue: "#38BDF8",
+              darkBlue: "#0284C7",
+              sky: "#E0F2FE",
+              mint: "#D1FAE5",
+              darkMint: "#065F46",
+              amber: "#FEF3C7",
+              darkAmber: "#92400E"
+            }
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    html, body { background-color: #F9FAFB; color: #111827; overscroll-behavior: none; }
+    .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+    .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 9999px; }
+  </style>
+</head>
+<body class="bg-[#F9FAFB] font-sans text-gray-900 antialiased selection:bg-red-100 selection:text-red-700">
+
+  <!-- ==================== DESKTOP SIDEBAR (lg+) ==================== -->
+  <aside class="hidden lg:flex fixed left-0 top-0 h-full w-64 bg-white border-r border-[#E5E7EB] z-40 flex-col justify-between p-4 shadow-sm">
+    <div class="flex flex-col gap-6">
+      <!-- Marca Pokédex Kanto -->
+      <div class="flex flex-col gap-2.5 px-1 pt-1">
+        <div class="flex items-center justify-between pb-3 border-b border-[#E5E7EB]">
+          <div class="flex items-center gap-2">
+            <div class="w-7 h-7 rounded-full bg-gradient-to-br from-sky-300 via-sky-400 to-blue-600 ring-2 ring-white shadow-[0_0_10px_rgba(56,189,248,0.7)] flex items-center justify-center">
+              <div class="w-2 h-2 rounded-full bg-white/80 -mt-1 -ml-1"></div>
+            </div>
+            <div class="flex items-center gap-1.5 ml-1">
+              <span class="w-2 h-2 rounded-full bg-[#F87171]"></span>
+              <span class="w-2 h-2 rounded-full bg-[#FBBF24]"></span>
+              <span class="w-2 h-2 rounded-full bg-[#34D399]"></span>
+            </div>
+          </div>
+          <span class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 font-mono text-[10px] font-bold">KANTO</span>
+        </div>
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-red-50 border border-red-100 flex items-center justify-center text-[#EF4444]">
+            <span class="material-symbols-outlined text-[20px]">view_in_ar</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-bold text-gray-900 tracking-tight text-[15px] leading-tight">TCG Recognize</span>
+            <span class="font-mono text-[10px] uppercase font-bold text-[#F05D5E] tracking-wider">Set me55 • HUD</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navegación Desktop -->
+      <nav class="flex flex-col gap-1.5" id="desktop-nav">
+        <button onclick="switchView('escaner')" data-view="escaner" class="nav-btn-desktop flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition-all">
+          <span class="material-symbols-outlined text-[20px]">document_scanner</span>
+          <span>Escáner</span>
+        </button>
+        <button onclick="switchView('album')" data-view="album" class="nav-btn-desktop flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition-all">
+          <span class="material-symbols-outlined text-[20px]">grid_view</span>
+          <span>Álbum</span>
+        </button>
+        <button onclick="switchView('dashboard')" data-view="dashboard" class="nav-btn-desktop flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition-all">
+          <span class="material-symbols-outlined text-[20px]">monitoring</span>
+          <span>Dashboard</span>
+        </button>
+        <button onclick="switchView('historial')" data-view="historial" class="nav-btn-desktop flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition-all">
+          <span class="material-symbols-outlined text-[20px]">history</span>
+          <span>Historial</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- Estado API Local -->
+    <div class="flex items-center justify-between p-2.5 rounded-xl bg-gray-50 border border-[#E5E7EB]">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-[#EF4444] to-[#F87171] text-white flex items-center justify-center">
+          <span class="material-symbols-outlined text-[18px]">memory</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-mono text-xs font-semibold text-gray-800 leading-tight">FastAPI Local</span>
+          <span id="api-status-desktop" class="font-mono text-[10px] text-[#065F46] font-medium flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#34D399] animate-pulse"></span> Conectado
+          </span>
+        </div>
+      </div>
+      <button onclick="refreshAllData()" title="Actualizar datos" class="text-gray-400 hover:text-[#EF4444] p-1 rounded-lg transition-colors">
+        <span class="material-symbols-outlined text-[18px]">refresh</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ==================== MOBILE TOP HEADER (< lg) ==================== -->
+  <header class="lg:hidden fixed top-0 w-full z-40 bg-white/95 backdrop-blur-md pt-safe border-b border-[#E5E7EB] shadow-sm">
+    <div class="h-16 px-4 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="flex items-center gap-1.5">
+          <div class="w-4 h-4 rounded-full bg-[#38BDF8] border-2 border-white ring-2 ring-[#BAE6FD] shadow-[0_0_8px_rgba(56,189,248,0.7)]"></div>
+          <div class="flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-[#F87171]"></span>
+            <span class="w-2 h-2 rounded-full bg-[#FBBF24]"></span>
+            <span class="w-2 h-2 rounded-full bg-[#34D399]"></span>
+          </div>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-mono text-[10px] text-[#F05D5E] font-bold uppercase tracking-widest">TCG RECOGNIZE</span>
+          <span id="mobile-header-title" class="text-base text-gray-900 font-bold leading-none">Escáner</span>
+        </div>
+      </div>
+      <button onclick="refreshAllData()" aria-label="Refrescar" class="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-50 border border-gray-200 text-gray-500 hover:text-[#F05D5E]">
+        <span class="material-symbols-outlined text-[20px]">sync</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN WORKSPACE ==================== -->
+  <main class="lg:pl-64 pt-20 lg:pt-8 pb-24 lg:pb-10 px-4 sm:px-6 lg:px-8 max-w-[1440px] mx-auto min-h-screen">
+
+    <!-- ========================================================== -->
+    <!-- VISTA 1: ESCÁNER                                           -->
+    <!-- ========================================================== -->
+    <section id="view-escaner" class="view-section space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+        <div>
+          <div class="inline-flex items-center gap-1.5 bg-rose-50 border border-rose-200 px-2.5 py-0.5 rounded-full mb-2">
+            <span class="w-2 h-2 rounded-full bg-[#F05D5E] animate-pulse"></span>
+            <span class="font-mono text-[11px] text-[#EF4444] font-semibold">Set activo: 30th Celebration (me55)</span>
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Escáner de Cartas</h1>
+          <p class="text-sm text-gray-500 mt-0.5">Sube o fotografía una carta para ejecutar OpenCV + Tesseract OCR + RapidFuzz.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <!-- Columna Izquierda: Visor y Carga -->
+        <div class="lg:col-span-6 bg-white rounded-2xl border border-[#E5E7EB] shadow-sm p-4 sm:p-5 space-y-4">
+          <!-- Zona Drag & Drop / Preview -->
+          <div id="dropzone" class="relative w-full aspect-[4/3] rounded-xl bg-[#F0F9FF] border-2 border-dashed border-[#BAE6FD] hover:border-[#38BDF8] overflow-hidden flex items-center justify-center cursor-pointer transition-colors">
+            <div class="absolute inset-0 opacity-25 bg-[radial-gradient(#38bdf8_1.2px,transparent_1.2px)] [background-size:16px_16px] pointer-events-none"></div>
+
+            <!-- Estado sin imagen -->
+            <div id="dropzone-placeholder" class="relative z-10 flex flex-col items-center text-center p-6 gap-2">
+              <div class="w-14 h-14 rounded-2xl bg-white border border-[#BAE6FD] flex items-center justify-center shadow-sm text-[#0284C7]">
+                <span class="material-symbols-outlined text-[30px]">filter_center_focus</span>
+              </div>
+              <span class="font-mono text-xs text-[#0369A1] font-bold uppercase tracking-wider bg-sky-100 border border-[#BAE6FD] px-3 py-0.5 rounded-full">Visor OCR Activo</span>
+              <p class="text-sm font-medium text-gray-700 mt-1">Arrastra tu foto aquí o haz clic para seleccionar</p>
+              <p class="text-xs text-gray-500">JPG, JPEG o PNG • 1 carta por foto sobre fondo mate</p>
+            </div>
+
+            <!-- Vista previa de la foto seleccionada -->
+            <img id="preview-image" alt="Vista previa" class="hidden relative z-10 max-h-full max-w-full object-contain p-2 rounded-xl" />
+
+            <!-- Overlay de carga -->
+            <div id="scan-loader" class="hidden absolute inset-0 z-20 bg-white/85 backdrop-blur-sm flex flex-col items-center justify-center gap-3">
+              <div class="w-10 h-10 rounded-full border-4 border-sky-200 border-t-[#EF4444] animate-spin"></div>
+              <span class="font-mono text-xs font-bold text-gray-800 uppercase tracking-wider">Procesando OpenCV + OCR...</span>
+            </div>
+          </div>
+
+          <input id="file-input" type="file" accept="image/*" class="hidden" />
+          <input id="camera-input" type="file" accept="image/*" capture="environment" class="hidden" />
+
+          <!-- Botones de acción -->
+          <div class="flex flex-col sm:flex-row gap-2.5">
+            <button onclick="document.getElementById('file-input').click()" class="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-sky-50 hover:bg-sky-100 text-[#0284C7] border border-sky-200 font-semibold text-sm transition-colors">
+              <span class="material-symbols-outlined text-[20px]">upload_file</span>
+              <span>Elegir archivo</span>
+            </button>
+            <button onclick="document.getElementById('camera-input').click()" class="sm:hidden flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200 font-semibold text-sm transition-colors">
+              <span class="material-symbols-outlined text-[20px]">photo_camera</span>
+              <span>Tomar foto</span>
+            </button>
+            <button id="btn-scan" onclick="runScan()" disabled class="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#EF4444] to-[#F05D5E] text-white font-semibold text-sm shadow-sm hover:brightness-105 active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed transition-all">
+              <span class="material-symbols-outlined text-[20px]">document_scanner</span>
+              <span>Escanear Carta</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Columna Derecha: Resultado + Acordeón OCR -->
+        <div class="lg:col-span-6 space-y-4">
+          <!-- Tarjeta de resultado -->
+          <div class="bg-white rounded-2xl border border-[#E5E7EB] shadow-sm p-5 min-h-[260px] flex flex-col justify-between">
+            <!-- Estado inicial -->
+            <div id="result-empty" class="flex-1 flex flex-col items-center justify-center text-center py-8 gap-2">
+              <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-gray-400">
+                <span class="material-symbols-outlined text-[26px]">style</span>
+              </div>
+              <h2 class="text-base font-bold text-gray-800">Esperando escaneo</h2>
+              <p class="text-xs text-gray-500 max-w-xs">Selecciona una imagen y pulsa "Escanear Carta" para ver la coincidencia oficial del set.</p>
+            </div>
+
+            <!-- Estado con resultado -->
+            <div id="result-content" class="hidden space-y-4">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                  <span id="res-status-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                  <h2 id="res-status-title" class="text-base font-bold text-gray-900">Identificada con éxito</h2>
+                </div>
+                <span id="res-score-badge" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full font-mono text-xs font-bold bg-[#D1FAE5] text-[#065F46] border border-emerald-200">
+                  100% MATCH
+                </span>
+              </div>
+
+              <div class="flex flex-col sm:flex-row gap-4 items-center sm:items-start">
+                <div class="w-36 shrink-0 rounded-xl overflow-hidden bg-gray-50 border border-gray-200 p-1.5 shadow-sm">
+                  <img id="res-card-img" alt="Carta oficial" class="w-full aspect-[2.5/3.5] object-contain rounded-lg bg-white" />
+                </div>
+                <div class="flex-1 w-full space-y-2.5">
+                  <div class="flex items-center justify-between">
+                    <span id="res-method-badge" class="px-2.5 py-0.5 rounded-full font-mono text-[11px] font-bold bg-[#D1FAE5] text-[#065F46]">exact_number</span>
+                    <span id="res-number" class="font-mono text-sm font-bold text-[#0284C7]">#000</span>
+                  </div>
+                  <h3 id="res-name" class="text-xl font-bold text-gray-900 leading-tight">--</h3>
+                  <div class="flex flex-wrap gap-2">
+                    <span id="res-rarity" class="inline-flex items-center gap-1 bg-[#FEF3C7] border border-amber-200 px-2.5 py-0.5 rounded-full text-[#92400E] font-mono text-xs font-bold">
+                      ★ Rareza
+                    </span>
+                    <span class="inline-flex items-center gap-1 bg-gray-100 border border-gray-200 px-2.5 py-0.5 rounded-full text-gray-600 font-mono text-xs font-medium">
+                      Guardada en SQLite
+                    </span>
+                  </div>
+                  <div class="pt-2 flex gap-2">
+                    <button onclick="switchView('album')" class="flex-1 py-2 px-3 rounded-xl bg-red-50 hover:bg-red-100 text-[#EF4444] border border-red-200 font-semibold text-xs transition-colors">
+                      Ver en mi Álbum
+                    </button>
+                    <button onclick="resetScanner()" class="py-2 px-3 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200 font-semibold text-xs transition-colors">
+                      Nueva foto
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Acordeón de Datos Crudos del OCR -->
+          <div class="bg-white rounded-2xl border border-[#E5E7EB] overflow-hidden shadow-sm">
+            <button onclick="toggleRawOcr()" class="flex items-center justify-between w-full p-4 text-left hover:bg-gray-50 transition-colors">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[20px] text-[#0284C7]">terminal</span>
+                <span class="text-sm font-bold text-gray-900">Ver datos crudos del OCR</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="font-mono text-[10px] text-[#0369A1] font-bold bg-sky-100 border border-sky-200 px-2 py-0.5 rounded">DEBUG</span>
+                <span id="ocr-chevron" class="material-symbols-outlined text-[20px] text-gray-500 transition-transform">expand_more</span>
+              </div>
+            </button>
+            <div id="ocr-content" class="hidden flex-col p-4 bg-[#F9FAFB] border-t border-[#E5E7EB] gap-3">
+              <pre id="ocr-json-output" class="p-3 rounded-xl bg-white border border-gray-200 font-mono text-xs text-gray-700 overflow-x-auto">{ "status": "Sin datos aún" }</pre>
+              <div class="flex justify-end">
+                <button onclick="copyOcrJson(this)" class="flex items-center gap-1.5 py-1.5 px-3 rounded-lg bg-white border border-gray-200 text-[#0284C7] hover:bg-sky-50 font-mono text-xs font-semibold">
+                  <span class="material-symbols-outlined text-[16px]">content_copy</span>
+                  <span>Copiar JSON</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- VISTA 2: ÁLBUM DE COLECCIÓN (BINDER)                       -->
+    <!-- ========================================================== -->
+    <section id="view-album" class="view-section hidden space-y-6">
+      <!-- Banner de Progreso -->
+      <div class="bg-white rounded-2xl border border-[#E5E7EB] p-5 sm:p-6 shadow-sm space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-3.5">
+            <div class="w-11 h-11 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-[#EF4444]">
+              <span class="material-symbols-outlined text-[26px]">auto_stories</span>
+            </div>
+            <div>
+              <div class="flex flex-wrap items-center gap-2">
+                <h1 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">Álbum: 30th Celebration</h1>
+                <span class="px-2.5 py-0.5 rounded-full bg-red-50 text-[#EF4444] font-mono text-[10px] font-bold uppercase border border-red-100">me55</span>
+              </div>
+              <p class="text-xs text-gray-500">Catálogo oficial cruzado con tus cartas escaneadas en SQLite</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 bg-gray-50 border border-gray-200 px-4 py-2 rounded-xl">
+            <div class="text-right">
+              <div class="font-mono text-[10px] text-gray-500 uppercase font-semibold">Físicas</div>
+              <div id="album-physical-count" class="font-mono text-base font-bold text-gray-900">0</div>
+            </div>
+            <div class="h-7 w-px bg-gray-200"></div>
+            <div>
+              <div class="font-mono text-[10px] text-gray-500 uppercase font-semibold">Únicas</div>
+              <div id="album-unique-count" class="font-mono text-base font-bold text-[#0284C7]">0 / 0</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <div class="flex justify-between items-center text-xs font-mono">
+            <span id="album-progress-label" class="font-bold text-gray-800">0% Completado</span>
+            <span id="album-missing-label" class="text-gray-500">0 faltantes</span>
+          </div>
+          <div class="w-full h-2.5 rounded-full bg-gray-100 border border-gray-200 overflow-hidden p-0.5">
+            <div id="album-progress-bar" class="h-full rounded-full bg-gradient-to-r from-[#38BDF8] to-[#EF4444] transition-all duration-700" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de búsqueda y filtros -->
+      <div class="bg-white border border-[#E5E7EB] p-4 rounded-2xl shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+        <div class="relative flex-1 max-w-md">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-[18px]">search</span>
+          <input id="album-search" oninput="renderAlbumGrid()" type="text" placeholder="Buscar por nombre o número (#006)..." class="w-full pl-9 pr-3 py-2 rounded-xl bg-[#F9FAFB] border border-gray-200 text-xs focus:outline-none focus:border-[#38BDF8] focus:bg-white" />
+        </div>
+        <div class="flex items-center gap-1.5 flex-wrap" id="album-filters">
+          <button onclick="setAlbumFilter('all', this)" class="album-filter-btn px-3.5 py-1.5 rounded-full bg-[#EF4444] text-white font-mono text-xs font-bold">Todas</button>
+          <button onclick="setAlbumFilter('owned', this)" class="album-filter-btn px-3.5 py-1.5 rounded-full bg-gray-50 border border-gray-200 text-gray-600 hover:bg-gray-100 font-mono text-xs font-semibold">Obtenidas</button>
+          <button onclick="setAlbumFilter('missing', this)" class="album-filter-btn px-3.5 py-1.5 rounded-full bg-gray-50 border border-gray-200 text-gray-600 hover:bg-gray-100 font-mono text-xs font-semibold">Faltantes</button>
+        </div>
+      </div>
+
+      <!-- Cuadrícula responsiva Binder -->
+      <div id="album-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4"></div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- VISTA 3: DASHBOARD                                         -->
+    <!-- ========================================================== -->
+    <section id="view-dashboard" class="view-section hidden space-y-6">
+      <div>
+        <div class="flex items-center gap-2 mb-1">
+          <span class="w-2.5 h-2.5 rounded-full bg-[#EF4444]"></span>
+          <span class="font-mono text-[11px] uppercase tracking-wider text-[#EF4444] font-bold">Consola Analítica TCG</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Dashboard de Colección</h1>
+        <p class="text-sm text-gray-500">Métricas calculadas en tiempo real desde SQLite.</p>
+      </div>
+
+      <!-- 3 KPIs -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="bg-white border border-[#E5E7EB] rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="font-mono text-xs uppercase tracking-wider text-gray-500 font-semibold">Cartas Escaneadas</span>
+            <div class="w-8 h-8 rounded-lg bg-red-50 border border-red-100 flex items-center justify-center text-[#EF4444]">
+              <span class="material-symbols-outlined text-[20px]">style</span>
+            </div>
+          </div>
+          <div class="mt-4">
+            <div id="kpi-total-scans" class="font-mono text-4xl font-extrabold text-gray-900">0</div>
+            <p id="kpi-success-sub" class="text-xs text-emerald-600 font-semibold mt-1.5">0 identificadas con éxito</p>
+          </div>
+        </div>
+
+        <div class="bg-white border border-[#E5E7EB] rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="font-mono text-xs uppercase tracking-wider text-gray-500 font-semibold">Cartas Únicas</span>
+            <span id="kpi-set-badge" class="px-2 py-0.5 rounded bg-sky-100 text-[#0284C7] font-mono text-[11px] font-bold">0% DEL SET</span>
+          </div>
+          <div class="mt-4">
+            <div class="flex items-baseline gap-1.5">
+              <span id="kpi-unique" class="font-mono text-4xl font-extrabold text-gray-900">0</span>
+              <span id="kpi-total-set" class="font-mono text-xl text-gray-400 font-medium">/ 50</span>
+            </div>
+            <p id="kpi-missing-sub" class="text-xs text-gray-500 mt-1.5">Ranuras pendientes en el álbum</p>
+          </div>
+        </div>
+
+        <div class="bg-white border border-[#E5E7EB] rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="font-mono text-xs uppercase tracking-wider text-gray-500 font-semibold">Progreso del Set</span>
+            <span class="material-symbols-outlined text-amber-400 text-[20px]">auto_awesome</span>
+          </div>
+          <div class="mt-4">
+            <div id="kpi-progress-pct" class="font-mono text-4xl font-extrabold text-gray-900">0.0%</div>
+            <div class="w-full h-2.5 bg-[#E5E7EB] rounded-full mt-3 overflow-hidden p-0.5">
+              <div id="kpi-progress-bar" class="h-full bg-gradient-to-r from-[#38BDF8] to-[#0284C7] rounded-full transition-all duration-700" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Duplicadas + Precisión OCR -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div class="lg:col-span-8 bg-white border border-[#E5E7EB] rounded-2xl p-5 shadow-sm">
+          <div class="flex items-center justify-between pb-3 mb-3 border-b border-[#E5E7EB]">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[#EF4444] text-[20px]">copy_all</span>
+              <h2 class="text-base font-bold text-gray-900">Top Cartas Más Escaneadas / Duplicadas</h2>
+            </div>
+          </div>
+          <div id="dash-duplicates" class="space-y-3">
+            <p class="text-sm text-gray-400 py-4 text-center">Aún no hay cartas suficientes para mostrar duplicados.</p>
+          </div>
+        </div>
+
+        <div class="lg:col-span-4 flex flex-col gap-5">
+          <div class="bg-white border border-[#E5E7EB] rounded-2xl p-5 shadow-sm flex-1 flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-xs uppercase tracking-wider text-gray-500 font-semibold">Rendimiento OCR</span>
+              <span class="px-2 py-0.5 rounded bg-[#D1FAE5] text-[#065F46] font-mono text-[11px] font-bold">Ruta A</span>
+            </div>
+            <div class="my-4 space-y-3">
+              <div>
+                <div class="text-xs text-gray-500">Tasa de Éxito Global</div>
+                <div id="kpi-success-rate" class="font-mono text-3xl font-extrabold text-emerald-700">0%</div>
+              </div>
+              <div>
+                <div class="text-xs text-gray-500">Confianza Promedio (Match Score)</div>
+                <div id="kpi-avg-score" class="font-mono text-2xl font-bold text-[#0284C7]">0%</div>
+              </div>
+            </div>
+            <button onclick="switchView('historial')" class="w-full py-2.5 px-4 rounded-xl bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-800 font-semibold text-xs transition-colors">
+              Ver Historial Completo →
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================== -->
+    <!-- VISTA 4: HISTORIAL DE ESCANEOS                             -->
+    <!-- ========================================================== -->
+    <section id="view-historial" class="view-section hidden space-y-5">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div>
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Historial de Escaneos</h1>
+          <p class="text-sm text-gray-500">Registro completo de cartas procesadas en SQLite.</p>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <span id="hist-chip-total" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E0F2FE] text-[#0369A1] font-mono text-xs font-bold">0 escaneos</span>
+          <span id="hist-chip-rate" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#D1FAE5] text-[#065F46] font-mono text-xs font-bold">0% éxito</span>
+        </div>
+      </div>
+
+      <!-- Barra de búsqueda y filtros -->
+      <div class="bg-white rounded-2xl p-4 border border-[#E5E7EB] shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
+        <div class="relative flex-1 max-w-md">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-[18px]">search</span>
+          <input id="hist-search" oninput="renderHistory()" type="text" placeholder="Buscar por nombre o número de carta..." class="w-full pl-9 pr-3 py-2 rounded-xl bg-[#F9FAFB] border border-gray-200 text-xs focus:outline-none focus:border-[#38BDF8] focus:bg-white" />
+        </div>
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <button onclick="setHistoryFilter('all', this)" class="hist-filter-btn px-3 py-1.5 rounded-full bg-[#EF4444] text-white font-mono text-xs font-bold">Todos</button>
+          <button onclick="setHistoryFilter('exact_number', this)" class="hist-filter-btn px-3 py-1.5 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 font-mono text-xs font-semibold">exact_number</button>
+          <button onclick="setHistoryFilter('fuzzy_name', this)" class="hist-filter-btn px-3 py-1.5 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 font-mono text-xs font-semibold">fuzzy_name</button>
+          <button onclick="setHistoryFilter('none', this)" class="hist-filter-btn px-3 py-1.5 rounded-full bg-red-50 text-red-700 hover:bg-red-100 font-mono text-xs font-semibold">Fallidos</button>
+        </div>
+      </div>
+
+      <!-- Tabla Desktop (md+) -->
+      <div class="hidden md:block bg-white rounded-2xl border border-[#E5E7EB] shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-[#F9FAFB] border-b border-[#E5E7EB] font-mono text-[11px] uppercase tracking-wider text-gray-500">
+                <th class="py-3 px-4">Carta</th>
+                <th class="py-3 px-4">Número</th>
+                <th class="py-3 px-4">Fecha</th>
+                <th class="py-3 px-4">Precisión</th>
+                <th class="py-3 px-4">Método</th>
+                <th class="py-3 px-4 text-right">Acción</th>
+              </tr>
+            </thead>
+            <tbody id="hist-table-body" class="divide-y divide-[#E5E7EB] text-sm"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tarjetas Móvil (< md) -->
+      <div id="hist-mobile-list" class="md:hidden space-y-3"></div>
+    </section>
+  </main>
+
+  <!-- ==================== MOBILE BOTTOM NAV (< lg) ==================== -->
+  <nav class="lg:hidden fixed bottom-0 w-full z-40 pb-safe bg-white/95 backdrop-blur-md border-t border-[#E5E7EB] shadow-[0_-2px_12px_rgba(0,0,0,0.04)]">
+    <div class="flex justify-around items-center h-18 py-2 px-1">
+      <button onclick="switchView('escaner')" data-view="escaner" class="nav-btn-mobile flex flex-col items-center justify-center min-w-[64px] gap-0.5">
+        <div class="icon-wrap w-10 h-8 rounded-xl flex items-center justify-center transition-all">
+          <span class="material-symbols-outlined text-[22px]">document_scanner</span>
+        </div>
+        <span class="font-mono text-[10px] uppercase tracking-wider">Escáner</span>
+      </button>
+      <button onclick="switchView('album')" data-view="album" class="nav-btn-mobile flex flex-col items-center justify-center min-w-[64px] gap-0.5">
+        <div class="icon-wrap w-10 h-8 rounded-xl flex items-center justify-center transition-all">
+          <span class="material-symbols-outlined text-[22px]">grid_view</span>
+        </div>
+        <span class="font-mono text-[10px] uppercase tracking-wider">Álbum</span>
+      </button>
+      <button onclick="switchView('dashboard')" data-view="dashboard" class="nav-btn-mobile flex flex-col items-center justify-center min-w-[64px] gap-0.5">
+        <div class="icon-wrap w-10 h-8 rounded-xl flex items-center justify-center transition-all">
+          <span class="material-symbols-outlined text-[22px]">monitoring</span>
+        </div>
+        <span class="font-mono text-[10px] uppercase tracking-wider">Dashboard</span>
+      </button>
+      <button onclick="switchView('historial')" data-view="historial" class="nav-btn-mobile flex flex-col items-center justify-center min-w-[64px] gap-0.5">
+        <div class="icon-wrap w-10 h-8 rounded-xl flex items-center justify-center transition-all">
+          <span class="material-symbols-outlined text-[22px]">history</span>
+        </div>
+        <span class="font-mono text-[10px] uppercase tracking-wider">Historial</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ==================== MODAL DE INSPECCIÓN ==================== -->
+  <div id="detail-modal" onclick="if(event.target===this) closeModal()" class="hidden fixed inset-0 z-50 bg-gray-900/40 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="w-full max-w-md bg-white rounded-t-2xl sm:rounded-2xl p-5 shadow-2xl border border-gray-200 space-y-4">
+      <div class="flex items-start justify-between">
+        <div>
+          <span id="modal-sub" class="font-mono text-[11px] text-[#EF4444] font-bold uppercase">Detalle de Registro</span>
+          <h3 id="modal-title" class="text-lg font-bold text-gray-900 mt-0.5">--</h3>
+        </div>
+        <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+      <div class="w-full h-56 rounded-xl bg-gray-50 border border-gray-200 flex items-center justify-center overflow-hidden p-2">
+        <img id="modal-img" alt="Detalle" class="max-h-full max-w-full object-contain rounded-lg" />
+      </div>
+      <div id="modal-meta" class="p-3 rounded-xl bg-gray-50 border border-gray-200 font-mono text-xs space-y-1.5 text-gray-700"></div>
+      <button onclick="closeModal()" class="w-full py-2.5 rounded-xl bg-[#EF4444] hover:bg-[#DC2626] text-white font-semibold text-sm transition-colors">
+        Cerrar
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== LÓGICA DE CONEXIÓN FASTAPI ==================== -->
+  <script>
+    const API_BASE = window.location.origin.startsWith("http") ? "" : "http://127.0.0.1:8000";
+
+    let selectedFile = null;
+    let lastOcrRaw = null;
+    let albumData = [];
+    let albumFilter = "all";
+    let historyData = [];
+    let historyFilter = "all";
+
+    const VIEW_TITLES = {
+      escaner: "Escáner",
+      album: "Álbum",
+      dashboard: "Dashboard",
+      historial: "Historial"
+    };
+
+    // ---------- Navegación ----------
+    function switchView(view) {
+      document.querySelectorAll(".view-section").forEach(el => el.classList.add("hidden"));
+      document.getElementById(`view-${view}`).classList.remove("hidden");
+      document.getElementById("mobile-header-title").textContent = VIEW_TITLES[view] || view;
+
+      // Desktop nav active state
+      document.querySelectorAll(".nav-btn-desktop").forEach(btn => {
+        const active = btn.dataset.view === view;
+        btn.className = active
+          ? "nav-btn-desktop flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold bg-[#FEE2E2] text-[#EF4444] shadow-xs transition-all"
+          : "nav-btn-desktop flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-all";
+      });
+
+      // Mobile nav active state
+      document.querySelectorAll(".nav-btn-mobile").forEach(btn => {
+        const active = btn.dataset.view === view;
+        const wrap = btn.querySelector(".icon-wrap");
+        btn.classList.toggle("text-[#EF4444]", active);
+        btn.classList.toggle("font-semibold", active);
+        btn.classList.toggle("text-gray-500", !active);
+        wrap.className = active
+          ? "icon-wrap w-10 h-8 rounded-xl flex items-center justify-center bg-[#FEE2E2] text-[#EF4444] transition-all"
+          : "icon-wrap w-10 h-8 rounded-xl flex items-center justify-center transition-all";
+      });
+
+      if (view === "album") loadCollection();
+      if (view === "dashboard") loadStats();
+      if (view === "historial") loadHistory();
+    }
+
+    // ---------- Escáner ----------
+    const dropzone = document.getElementById("dropzone");
+    const fileInput = document.getElementById("file-input");
+    const cameraInput = document.getElementById("camera-input");
+
+    dropzone.addEventListener("click", () => fileInput.click());
+    dropzone.addEventListener("dragover", e => { e.preventDefault(); dropzone.classList.add("border-[#EF4444]"); });
+    dropzone.addEventListener("dragleave", () => dropzone.classList.remove("border-[#EF4444]"));
+    dropzone.addEventListener("drop", e => {
+      e.preventDefault();
+      dropzone.classList.remove("border-[#EF4444]");
+      if (e.dataTransfer.files[0]) handleFileSelect(e.dataTransfer.files[0]);
+    });
+
+    fileInput.addEventListener("change", e => { if (e.target.files[0]) handleFileSelect(e.target.files[0]); });
+    cameraInput.addEventListener("change", e => { if (e.target.files[0]) handleFileSelect(e.target.files[0]); });
+
+    function handleFileSelect(file) {
+      selectedFile = file;
+      const preview = document.getElementById("preview-image");
+      preview.src = URL.createObjectURL(file);
+      preview.classList.remove("hidden");
+      document.getElementById("dropzone-placeholder").classList.add("hidden");
+      document.getElementById("btn-scan").disabled = false;
+    }
+
+    function resetScanner() {
+      selectedFile = null;
+      fileInput.value = "";
+      cameraInput.value = "";
+      document.getElementById("preview-image").classList.add("hidden");
+      document.getElementById("dropzone-placeholder").classList.remove("hidden");
+      document.getElementById("btn-scan").disabled = true;
+      document.getElementById("result-content").classList.add("hidden");
+      document.getElementById("result-empty").classList.remove("hidden");
+    }
+
+    async function runScan() {
+      if (!selectedFile) return;
+      const loader = document.getElementById("scan-loader");
+      const btn = document.getElementById("btn-scan");
+      loader.classList.remove("hidden");
+      btn.disabled = true;
+
+      try {
+        const formData = new FormData();
+        formData.append("file", selectedFile);
+
+        const res = await fetch(`${API_BASE}/api/v1/scan`, { method: "POST", body: formData });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        lastOcrRaw = data.ocr_raw;
+        document.getElementById("ocr-json-output").textContent = JSON.stringify(data.ocr_raw, null, 2);
+
+        document.getElementById("result-empty").classList.add("hidden");
+        document.getElementById("result-content").classList.remove("hidden");
+
+        const match = data.match || {};
+        const card = match.card;
+
+        if (data.success && card) {
+          document.getElementById("res-status-dot").className = "w-2.5 h-2.5 rounded-full bg-emerald-500";
+          document.getElementById("res-status-title").textContent = "Identificada con éxito";
+          document.getElementById("res-score-badge").textContent = `${match.score}% MATCH`;
+          document.getElementById("res-score-badge").className = "inline-flex items-center px-2.5 py-1 rounded-full font-mono text-xs font-bold bg-[#D1FAE5] text-[#065F46] border border-emerald-200";
+          document.getElementById("res-card-img").src = card.image_url || "";
+          document.getElementById("res-name").textContent = card.name;
+          document.getElementById("res-number").textContent = `#${card.number}`;
+          document.getElementById("res-rarity").textContent = `★ ${card.rarity || "Special"}`;
+          const isExact = match.match_type === "exact_number";
+          document.getElementById("res-method-badge").textContent = match.match_type;
+          document.getElementById("res-method-badge").className = isExact
+            ? "px-2.5 py-0.5 rounded-full font-mono text-[11px] font-bold bg-[#D1FAE5] text-[#065F46]"
+            : "px-2.5 py-0.5 rounded-full font-mono text-[11px] font-bold bg-[#E0F2FE] text-[#0369A1]";
+        } else {
+          document.getElementById("res-status-dot").className = "w-2.5 h-2.5 rounded-full bg-red-500";
+          document.getElementById("res-status-title").textContent = "No se encontró coincidencia";
+          document.getElementById("res-score-badge").textContent = "0% MATCH";
+          document.getElementById("res-score-badge").className = "inline-flex items-center px-2.5 py-1 rounded-full font-mono text-xs font-bold bg-[#FEE2E2] text-[#991B1B] border border-red-200";
+          document.getElementById("res-card-img").src = document.getElementById("preview-image").src;
+          document.getElementById("res-name").textContent = "Carta no identificada";
+          document.getElementById("res-number").textContent = "--";
+          document.getElementById("res-rarity").textContent = "Revisa los datos crudos del OCR";
+          document.getElementById("res-method-badge").textContent = "none";
+          document.getElementById("res-method-badge").className = "px-2.5 py-0.5 rounded-full font-mono text-[11px] font-bold bg-[#FEE2E2] text-[#991B1B]";
+        }
+      } catch (err) {
+        alert("Error conectando con FastAPI. Verifica que uvicorn esté corriendo en el puerto 8000.");
+        console.error(err);
+      } finally {
+        loader.classList.add("hidden");
+        btn.disabled = false;
+      }
+    }
+
+    function toggleRawOcr() {
+      const content = document.getElementById("ocr-content");
+      const chevron = document.getElementById("ocr-chevron");
+      const isHidden = content.classList.toggle("hidden");
+      content.classList.toggle("flex", !isHidden);
+      chevron.style.transform = isHidden ? "rotate(0deg)" : "rotate(180deg)";
+    }
+
+    function copyOcrJson(btn) {
+      if (!lastOcrRaw) return;
+      navigator.clipboard?.writeText(JSON.stringify(lastOcrRaw, null, 2));
+      const span = btn.querySelector("span:last-child");
+      span.textContent = "¡Copiado!";
+      setTimeout(() => (span.textContent = "Copiar JSON"), 1500);
+    }
+
+    // ---------- Álbum ----------
+    async function loadCollection() {
+      try {
+        const res = await fetch(`${API_BASE}/api/v1/collection`);
+        const data = await res.json();
+        albumData = data.cards || [];
+
+        document.getElementById("album-physical-count").textContent = data.total_physical;
+        document.getElementById("album-unique-count").textContent = `${data.unique_owned} / ${data.total_cards}`;
+        document.getElementById("album-progress-label").textContent = `${data.progress_pct}% Completado`;
+        document.getElementById("album-missing-label").textContent = `${data.total_cards - data.unique_owned} faltantes`;
+        document.getElementById("album-progress-bar").style.width = `${data.progress_pct}%`;
+        renderAlbumGrid();
+      } catch (err) {
+        console.error("Error cargando álbum:", err);
+      }
+    }
+
+    function setAlbumFilter(filter, btn) {
+      albumFilter = filter;
+      document.querySelectorAll(".album-filter-btn").forEach(b => {
+        b.className = "album-filter-btn px-3.5 py-1.5 rounded-full bg-gray-50 border border-gray-200 text-gray-600 hover:bg-gray-100 font-mono text-xs font-semibold";
+      });
+      btn.className = "album-filter-btn px-3.5 py-1.5 rounded-full bg-[#EF4444] text-white font-mono text-xs font-bold";
+      renderAlbumGrid();
+    }
+
+    function renderAlbumGrid() {
+      const q = (document.getElementById("album-search").value || "").toLowerCase().trim();
+      const grid = document.getElementById("album-grid");
+
+      const filtered = albumData.filter(c => {
+        if (albumFilter === "owned" && !c.owned) return false;
+        if (albumFilter === "missing" && c.owned) return false;
+        if (q && !c.name.toLowerCase().includes(q) && !c.number.toLowerCase().includes(q)) return false;
+        return true;
+      });
+
+      if (!filtered.length) {
+        grid.innerHTML = `<div class="col-span-full text-center py-12 text-sm text-gray-400">No hay cartas que coincidan con el filtro.</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(c => {
+        if (c.owned) {
+          return `
+            <div onclick='openCardModal(${JSON.stringify(c).replace(/'/g, "&#39;")})' class="group cursor-pointer flex flex-col rounded-2xl bg-white border border-gray-200 p-2.5 shadow-xs hover:shadow-md hover:-translate-y-0.5 transition-all">
+              <div class="relative w-full aspect-[2.5/3.5] rounded-xl overflow-hidden bg-gray-50 border border-gray-100">
+                <img src="${c.image_url || ""}" alt="${c.name}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                <span class="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-[#EF4444] text-white font-mono text-[10px] font-bold shadow-sm">x${c.count}</span>
+                <span class="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-[#FEF3C7]/95 text-[#92400E] font-mono text-[10px] font-bold border border-amber-200">${c.rarity}</span>
+              </div>
+              <div class="mt-2.5 flex flex-col gap-0.5">
+                <span class="font-mono text-xs text-[#0284C7] font-bold">#${c.number}</span>
+                <span class="text-sm font-bold text-gray-900 truncate">${c.name}</span>
+              </div>
+            </div>`;
+        }
+        return `
+          <div class="flex flex-col justify-between rounded-2xl bg-[#F3F4F6]/80 border-2 border-dashed border-[#D1D5DB] p-2.5">
+            <div class="w-full aspect-[2.5/3.5] rounded-xl bg-gray-100/80 flex flex-col items-center justify-center gap-1.5 p-2 text-center">
+              <div class="w-9 h-9 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400">
+                <span class="material-symbols-outlined text-[18px]">lock</span>
+              </div>
+              <span class="font-mono text-sm text-gray-500 font-bold">#${c.number}</span>
+              <span class="text-xs text-gray-500 font-medium line-clamp-2">${c.name}</span>
+              <span class="px-2 py-0.5 rounded-full bg-gray-200/80 text-gray-600 font-mono text-[10px]">Faltante</span>
+            </div>
+            <div class="mt-2.5 flex items-center justify-between font-mono text-[11px] text-gray-400">
+              <span>#${c.number}</span>
+              <span>${c.rarity}</span>
+            </div>
+          </div>`;
+      }).join("");
+    }
+
+    // ---------- Dashboard ----------
+    async function loadStats() {
+      try {
+        const res = await fetch(`${API_BASE}/api/v1/stats`);
+        const d = await res.json();
+
+        document.getElementById("kpi-total-scans").textContent = d.total_scans;
+        document.getElementById("kpi-success-sub").textContent = `${d.successful_scans} identificadas • ${d.failed_scans} fallidas`;
+        document.getElementById("kpi-unique").textContent = d.unique_cards;
+        document.getElementById("kpi-total-set").textContent = `/ ${d.total_set_cards}`;
+        document.getElementById("kpi-set-badge").textContent = `${d.progress_pct}% DEL SET`;
+        document.getElementById("kpi-missing-sub").textContent = `${d.total_set_cards - d.unique_cards} cartas faltantes`;
+        document.getElementById("kpi-progress-pct").textContent = `${d.progress_pct}%`;
+        document.getElementById("kpi-progress-bar").style.width = `${d.progress_pct}%`;
+        document.getElementById("kpi-success-rate").textContent = `${d.success_rate}%`;
+        document.getElementById("kpi-avg-score").textContent = `${d.avg_score}%`;
+
+        const dupesEl = document.getElementById("dash-duplicates");
+        if (!d.duplicates.length) {
+          dupesEl.innerHTML = `<p class="text-sm text-gray-400 py-4 text-center">Escanea cartas para ver tus repetidas aquí.</p>`;
+          return;
+        }
+        const maxCount = d.duplicates[0].count || 1;
+        dupesEl.innerHTML = d.duplicates.map(item => {
+          const width = Math.round((item.count / maxCount) * 100);
+          return `
+            <div class="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-50 transition-colors">
+              <div class="w-9 h-12 rounded-lg overflow-hidden bg-gray-100 border border-gray-200 shrink-0">
+                ${item.image_url ? `<img src="${item.image_url}" class="w-full h-full object-cover" />` : ""}
+              </div>
+              <div class="w-36 sm:w-44 shrink-0">
+                <div class="text-sm font-semibold text-gray-900 truncate">${item.name}</div>
+                <div class="font-mono text-[11px] font-bold text-[#0284C7]">#${item.number}</div>
+              </div>
+              <div class="flex-1 bg-[#E0F2FE] rounded-full h-2.5 overflow-hidden">
+                <div class="h-full bg-[#38BDF8] rounded-full" style="width: ${width}%"></div>
+              </div>
+              <span class="px-2.5 py-0.5 rounded-full bg-red-50 text-[#EF4444] border border-red-100 font-mono text-xs font-bold shrink-0">x${item.count}</span>
+            </div>`;
+        }).join("");
+      } catch (err) {
+        console.error("Error cargando dashboard:", err);
+      }
+    }
+
+    // ---------- Historial ----------
+    async function loadHistory() {
+      try {
+        const res = await fetch(`${API_BASE}/api/v1/history`);
+        const d = await res.json();
+        historyData = d.items || [];
+        document.getElementById("hist-chip-total").textContent = `${d.total} escaneos`;
+        document.getElementById("hist-chip-rate").textContent = `${d.success_rate}% éxito`;
+        renderHistory();
+      } catch (err) {
+        console.error("Error cargando historial:", err);
+      }
+    }
+
+    function setHistoryFilter(filter, btn) {
+      historyFilter = filter;
+      document.querySelectorAll(".hist-filter-btn").forEach(b => {
+        b.className = "hist-filter-btn px-3 py-1.5 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 font-mono text-xs font-semibold";
+      });
+      btn.className = "hist-filter-btn px-3 py-1.5 rounded-full bg-[#EF4444] text-white font-mono text-xs font-bold";
+      renderHistory();
+    }
+
+    function methodBadge(method) {
+      if (method === "exact_number") return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#D1FAE5] text-[#065F46] font-mono text-[11px] font-bold">exact_number</span>`;
+      if (method === "fuzzy_name") return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#E0F2FE] text-[#0369A1] font-mono text-[11px] font-bold">fuzzy_name</span>`;
+      return `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#FEE2E2] text-[#991B1B] font-mono text-[11px] font-bold">none</span>`;
+    }
+
+    function renderHistory() {
+      const q = (document.getElementById("hist-search").value || "").toLowerCase().trim();
+      const filtered = historyData.filter(item => {
+        if (historyFilter !== "all" && item.match_type !== historyFilter) return false;
+        if (q && !item.card_name.toLowerCase().includes(q) && !item.card_number.toLowerCase().includes(q)) return false;
+        return true;
+      });
+
+      const tbody = document.getElementById("hist-table-body");
+      const mList = document.getElementById("hist-mobile-list");
+
+      if (!filtered.length) {
+        tbody.innerHTML = `<tr><td colspan="6" class="py-10 text-center text-gray-400 text-sm">Sin escaneos registrados.</td></tr>`;
+        mList.innerHTML = `<div class="bg-white rounded-2xl p-8 text-center text-gray-400 text-sm border border-gray-200">Sin escaneos registrados.</div>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(item => `
+        <tr class="hover:bg-gray-50 transition-colors">
+          <td class="py-3 px-4">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-12 rounded-md bg-gray-100 border border-gray-200 overflow-hidden shrink-0 flex items-center justify-center">
+                ${item.image_url ? `<img src="${item.image_url}" class="w-full h-full object-cover" />` : `<span class="material-symbols-outlined text-gray-400 text-[18px]">broken_image</span>`}
+              </div>
+              <div>
+                <div class="font-semibold text-gray-900">${item.card_name}</div>
+                <div class="text-xs text-gray-500">${item.rarity}</div>
+              </div>
+            </div>
+          </td>
+          <td class="py-3 px-4 font-mono text-xs font-bold text-[#0284C7]">#${item.card_number}</td>
+          <td class="py-3 px-4 font-mono text-xs text-gray-500">${item.scanned_at}</td>
+          <td class="py-3 px-4 font-mono text-xs font-bold text-gray-800">${item.match_score}%</td>
+          <td class="py-3 px-4">${methodBadge(item.match_type)}</td>
+          <td class="py-3 px-4 text-right">
+            <button onclick='openHistoryModal(${JSON.stringify(item).replace(/'/g, "&#39;")})' class="w-8 h-8 rounded-lg bg-gray-100 hover:bg-sky-100 text-gray-600 hover:text-[#0284C7] inline-flex items-center justify-center transition-colors">
+              <span class="material-symbols-outlined text-[18px]">visibility</span>
+            </button>
+          </td>
+        </tr>`).join("");
+
+      mList.innerHTML = filtered.map(item => `
+        <article class="bg-white rounded-2xl p-3.5 border border-[#E5E7EB] shadow-xs flex items-center gap-3">
+          <div class="w-12 h-16 rounded-lg bg-gray-100 border border-gray-200 overflow-hidden shrink-0 flex items-center justify-center">
+            ${item.image_url ? `<img src="${item.image_url}" class="w-full h-full object-cover" />` : `<span class="material-symbols-outlined text-red-400">broken_image</span>`}
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-mono text-xs font-bold text-[#0284C7]">#${item.card_number}</span>
+              <span class="font-mono text-[10px] text-gray-400">${item.scanned_at}</span>
+            </div>
+            <div class="font-bold text-sm text-gray-900 truncate">${item.card_name}</div>
+            <div class="flex items-center justify-between mt-1.5">
+              ${methodBadge(item.match_type)}
+              <div class="flex items-center gap-2">
+                <span class="font-mono text-xs font-bold text-gray-700">${item.match_score}%</span>
+                <button onclick='openHistoryModal(${JSON.stringify(item).replace(/'/g, "&#39;")})' class="w-7 h-7 rounded-lg bg-gray-100 text-gray-600 flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[16px]">visibility</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </article>`).join("");
+    }
+
+    // ---------- Modales ----------
+    function openCardModal(card) {
+      document.getElementById("modal-sub").textContent = `Carta #${card.number} • ${card.rarity}`;
+      document.getElementById("modal-title").textContent = card.name;
+      document.getElementById("modal-img").src = card.image_url || "";
+      document.getElementById("modal-meta").innerHTML = `
+        <div class="flex justify-between"><span>ID Set:</span><strong>${card.id}</strong></div>
+        <div class="flex justify-between"><span>Copias en colección:</span><strong>x${card.count}</strong></div>
+      `;
+      document.getElementById("detail-modal").classList.remove("hidden");
+    }
+
+    function openHistoryModal(item) {
+      document.getElementById("modal-sub").textContent = `Escaneo #${item.id} • ${item.scanned_at}`;
+      document.getElementById("modal-title").textContent = item.card_name;
+      document.getElementById("modal-img").src = item.uploaded_image ? `${API_BASE}${item.uploaded_image}` : (item.image_url || "");
+      document.getElementById("modal-meta").innerHTML = `
+        <div class="flex justify-between"><span>Número:</span><strong>#${item.card_number}</strong></div>
+        <div class="flex justify-between"><span>Método:</span><strong>${item.match_type}</strong></div>
+        <div class="flex justify-between"><span>Precisión:</span><strong>${item.match_score}%</strong></div>
+      `;
+      document.getElementById("detail-modal").classList.remove("hidden");
+    }
+
+    function closeModal() {
+      document.getElementById("detail-modal").classList.add("hidden");
+    }
+
+    function refreshAllData() {
+      loadCollection();
+      loadStats();
+      loadHistory();
+    }
+
+    // Inicialización
+    switchView("escaner");
+  </script>
+</body>
+</html>
