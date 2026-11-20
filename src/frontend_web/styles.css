@@ -1,0 +1,43 @@
+/* Pastel Kanto OS — Estilos base y utilidades */
+:root {
+  --surface: #F9FAFB;
+  --text-main: #111827;
+  --pokedex-red: #EF4444;
+  --pokedex-coral: #F05D5E;
+  --pokedex-blue: #38BDF8;
+}
+
+html,
+body {
+  background-color: var(--surface);
+  color: var(--text-main);
+  font-family: "Inter", sans-serif;
+  overscroll-behavior: none;
+}
+
+.font-mono {
+  font-family: "JetBrains Mono", monospace !important;
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.dropzone-grid {
+  background-image: radial-gradient(#38bdf8 1.2px, transparent 1.2px);
+  background-size: 16px 16px;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 9999px;
+}
